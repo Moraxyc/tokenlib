@@ -34,8 +34,8 @@ class TestUtils(unittest.TestCase):
         OKM = unhexlify(b"3cb25f25faacd57a90434f64d0362f2a") +\
               unhexlify(b"2d2d0a90cf1a5a4c5db02d56ecc4c5bf") +\
               unhexlify(b"34007208d5b887185865")
-        self.assertEquals(HKDF_extract(salt, IKM, hashmod), PRK)
-        self.assertEquals(HKDF(IKM, salt, info, L, hashmod), OKM)
+        self.assertEqual(HKDF_extract(salt, IKM, hashmod), PRK)
+        self.assertEqual(HKDF(IKM, salt, info, L, hashmod), OKM)
 
     def test_hkdf_rfc_case7(self):
         hashmod = hashlib.sha1
@@ -47,5 +47,5 @@ class TestUtils(unittest.TestCase):
         OKM = unhexlify(b"2c91117204d745f3500d636a62f64f0a") +\
               unhexlify(b"b3bae548aa53d423b0d1f27ebba6f5e5") +\
               unhexlify(b"673a081d70cce7acfc48")
-        self.assertEquals(HKDF_extract(salt, IKM, hashmod), PRK)
-        self.assertEquals(HKDF(IKM, salt, info, L, hashmod), OKM)
+        self.assertEqual(HKDF_extract(salt, IKM, hashmod), PRK)
+        self.assertEqual(HKDF(IKM, salt, info, L, hashmod), OKM)

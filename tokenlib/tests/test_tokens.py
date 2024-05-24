@@ -21,7 +21,7 @@ class TestTokens(unittest.TestCase):
         token_bytes = decode_token_bytes(token)
         # Proper token == valid.
         data = manager.parse_token(token)
-        self.assertEquals(data["hello"], "world")
+        self.assertEqual(data["hello"], "world")
         # Badly-encoded bytes == not valid.
         bad_token = "@" + token[1:]
         with self.assertRaises(errors.MalformedTokenError):
@@ -52,9 +52,9 @@ class TestTokens(unittest.TestCase):
         manager = tokenlib.TokenManager()
         token1 = manager.make_token({"test": "one"})
         token2 = manager.make_token({"test": "two"})
-        self.assertEquals(manager.get_derived_secret(token1),
+        self.assertEqual(manager.get_derived_secret(token1),
                           manager.get_derived_secret(token1))
-        self.assertNotEquals(manager.get_derived_secret(token1),
+        self.assertNotEqual(manager.get_derived_secret(token1),
                              manager.get_derived_secret(token2))
 
     def test_tokens_differ_for_different_master_secrets(self):
@@ -62,8 +62,8 @@ class TestTokens(unittest.TestCase):
         manager2 = tokenlib.TokenManager(secret="two")
         token1 = manager1.make_token({"test": "data"})
         token2 = manager2.make_token({"test": "data"})
-        self.assertNotEquals(token1, token2)
-        self.assertNotEquals(manager1.get_derived_secret(token1),
+        self.assertNotEqual(token1, token2)
+        self.assertNotEqual(manager1.get_derived_secret(token1),
                              manager2.get_derived_secret(token2))
         with self.assertRaises(errors.InvalidSignatureError):
             manager1.parse_token(token2)
@@ -86,15 +86,15 @@ class TestTokens(unittest.TestCase):
     def test_master_secret_can_be_unicode_string(self):
         manager = tokenlib.TokenManager(secret=b"one".decode("ascii"))
         token = manager.make_token({"test": "data"})
-        self.assertEquals(manager.parse_token(token)["test"], "data")
+        self.assertEqual(manager.parse_token(token)["test"], "data")
 
     def test_convenience_functions(self):
         token = tokenlib.make_token({"hello": "world"})
-        self.assertEquals(tokenlib.parse_token(token)["hello"], "world")
+        self.assertEqual(tokenlib.parse_token(token)["hello"], "world")
         self.assertRaises(ValueError, tokenlib.parse_token, token, secret="X")
-        self.assertEquals(tokenlib.get_derived_secret(token),
+        self.assertEqual(tokenlib.get_derived_secret(token),
                           tokenlib.get_derived_secret(token))
-        self.assertNotEquals(tokenlib.get_derived_secret(token),
+        self.assertNotEqual(tokenlib.get_derived_secret(token),
                              tokenlib.get_derived_secret(token, secret="X"))
 
     def test_tokens_are_native_string_type(self):
@@ -106,5 +106,5 @@ class TestTokens(unittest.TestCase):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("default")
             tokenlib.get_token_secret(token)
-            self.assertEquals(len(w), 1)
-            self.assertEquals(w[0].category, DeprecationWarning)
+            self.assertEqual(len(w), 1)
+            self.assertEqual(w[0].category, DeprecationWarning)
